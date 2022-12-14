@@ -198,251 +198,67 @@ The following errors will be reported:
 ```
 
 ```
-#### GET `/agents`
+#### GET `/properties`
+Fetches object containing list all property objects created by an agent
 
-
-
-
-```
-#### GET `/categories/<int:id>/questions`
-
-- Fetches a dictionary of paginated questions that are in the category specified in the URL parameters.
-- Request Arguments:
-  - optional URL queries:
-    - `page`: an optional integer for a page number, which is used to fetch 10 questions for the corresponding page.
-    - default: `1`
-- Returns: An object with 3 keys:
-  - str:`current_category`: a string that contains the category type for the selected category.
-  - `questions`: a list that contains paginated questions objects, that coorespond to the `page` query.
-    - int:`id`: Question id.
-    - str:`question`: Question text.
-    - int:`difficulty`: Question difficulty.
-    - int:`category`: question category id.
-  - int:`total_questions`: an integer that contains total questions in the selected category.
-- example: `curl http://localhost:5000/api/v1/categories/1/questions -H "Content-Type: application/json"`
-
-```
-{
-  "current_category": "Science",
-  "questions": [
-    {
-      "answer": "The Liver",
-      "category": 3,
-      "difficulty": 4,
-      "id": 20,
-      "question": "What is the heaviest organ in the human body?"
-    },
-    {
-      "answer": "Alexander Fleming",
-      "category": 1,
-      "difficulty": 3,
-      "id": 21,
-      "question": "Who discovered penicillin?"
-    },
-    {
-      "answer": "Blood",
-      "category": 1,
-      "difficulty": 4,
-      "id": 22,
-      "question": "Hematology is a branch of medicine involving the study of what?"
-    },
-    {
-      "answer": "Me, duh!",
-      "category": 1,
-      "difficulty": 5,
-      "id": 24,
-      "question": "Who invented electricity?"
-    }
-  ],
-  "success": true,
-  "total_questions": 4
-}
-```
-
-#### DELETE `/questions/<int:id>`
-
-- Deletes the question by the id specified in the URL parameters.
-- Request Arguments: None
-- Returns: A dictionary that contain deleted: question_id key:value pair.
-- example: `curl -X DELETE http://localhost:5000/api/v1/questions/20 -H "Content-Type: application/json"`
-
-```
-{
-    "deleted": 2,
+  Example Property object.
+    
+  {
+    "feedback": [
+        {
+            "address": "1015 Florida Street",
+            "agent_id": 9,
+            "bedroom": null,
+            "country": "Nairobi, Kenya",
+            "created_at": "Mon, 07 Nov 2022 12:14:17 GMT",
+            "description": "Can only pick drinks and view drink details",
+            "id": 33,
+            "price": 2222,
+            "property_type": "Bungalow",
+            "user_id=": null,
+            "view1": null,
+            "view2": null,
+            "view3": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QAqRXhpZgAASUkqAANtdUxUGq2LoyYsWouLHuAPEdg4AjuO7gQNMMAMkWVip3g2Nu7AAKKYg3BItxGh9WGKhfTPnNtzHcRopsCdRwOm8aHs44qxUcD4oAxDgoBTHV8CLjh2jwPDw1HdhUIUPT6Bhua9r79N9xu9d9ewYQARikJhijFkUf/2Q==",
+            "view4": "data:image/jpeg;base64,/9j/4AAQSk5e2CZMctv2TTq3f213baGXssh2h3eW2ezLzYBxcLXNC1IpZkIG3GLYDy3wIANPBVrODZcqRQkWEZBtDOcnTGRoukDYtRda6CDrJI0wANU2LyVncSFJd9KGCzgmQQegCNsjFbfEs7PGUN9tYhY73EBLvPGZm6lsNtL5Cs02RPqsFyrABMA9yUCttSS8ONrpVucRAaru3keZtEObZxEq6mNjLurs+xFQTQvAG+mJeq1v7GPTM+xAKJ/9k="
+        },
+     {
+      ...
+     },
+    ],
     "success": true
 }
-```
 
-#### POST `/questions/search`
-
-- search for a question.
-- Request Arguments:
-  - Json object:
-    - str:`searchTerm`: a string that contains the search term to search with.
-- returns: an object with the following:
-  - `questions`: a list that contains paginated questions objects, durrived from the search term.
-    - int:`id`: Question id.
-    - str:`question`: Question text.
-    - int:`difficulty`: Question difficulty.
-    - int:`category`: question category id.
-  - int:`total_questions`: an integer that contains total questions returned from the search.
-- example: `curl -X POST http://localhost:5000/api/v1/questions -H "Content-Type: application/json" -d '{"searchTerm": "title"}'`
 
 ```
-{
-    "questions": [
-        {
-            "answer": "Maya Angelou",
-            "category": 3,
-            "difficulty": 2,
-            "id": 5,
-            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-        },
-        {
-            "answer": "Edward Scissorhands",
-            "category": 2,
-            "difficulty": 3,
-            "id": 6,
-            "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-        }
-    ],
-    "success": true,
-    "total_questions": 2
-}
-```
-
-#### POST `/questions`
-
-- posts a new question.
-- Request Arguments:
-  - Json object:
-    - str:`question`: A string that contains the question text.
-    - str:`answer`: A string that contains the answer text.
-    - int:`difficulty`: An integer that contains the difficulty, please note that `difficulty` can be from 1 to 5.
-    - int:`category: An integer that contains the category id.
-- Returns: an object with the following keys:
-  - int:`id`: an integer that contains the ID for the created question.
-  - str:`question`: A string that contains the text for the created question.
-  - `questions`: a list that contains paginated questions objects.
-    - int:`id`: Question id.
-    - str:`question`: Question text.
-    - int:`difficulty`: Question difficulty.
-    - int:`category`: question category id.
-  - int:`total_questions`: an integer that contains total questions.
-- example: `curl -X POST http://localhost:5000/api/v1/questions -H "Content-Type: application/json" -d '{ "question": "What is the application used to build great python backends?", "answer": "Flask", "difficulty": 2, "category": 1}'`
 
 ```
-{
-    "id": 34,
-    "question": "What is the application used to build great python backends?",
-    "questions": [
-        {
-            "answer": "Apollo 13",
-            "category": 5,
-            "difficulty": 4,
-            "id": 2,
-            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-        },
-        {
-            "answer": "Tom Cruise",
-            "category": 5,
-            "difficulty": 4,
-            "id": 4,
-            "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-        },
-        {
-            "answer": "Muhammad Ali",
-            "category": 4,
-            "difficulty": 1,
-            "id": 9,
-            "question": "What boxer's original name is Cassius Clay?"
-        },
-        {
-            "answer": "Brazil",
-            "category": 6,
-            "difficulty": 3,
-            "id": 10,
-            "question": "Which is the only team to play in every soccer World Cup tournament?"
-        },
-        {
-            "answer": "Uruguay",
-            "category": 6,
-            "difficulty": 4,
-            "id": 11,
-            "question": "Which country won the first ever soccer World Cup in 1930?"
-        },
-        {
-            "answer": "George Washington Carver",
-            "category": 4,
-            "difficulty": 2,
-            "id": 12,
-            "question": "Who invented Peanut Butter?"
-        },
-        {
-            "answer": "Lake Victoria",
-            "category": 3,
-            "difficulty": 2,
-            "id": 13,
-            "question": "What is the largest lake in Africa?"
-        },
-        {
-            "answer": "The Palace of Versailles",
-            "category": 3,
-            "difficulty": 3,
-            "id": 14,
-            "question": "In which royal palace would you find the Hall of Mirrors?"
-        },
-        {
-            "answer": "Agra",
-            "category": 3,
-            "difficulty": 2,
-            "id": 15,
-            "question": "The Taj Mahal is located in which Indian city?"
-        },
-        {
-            "answer": "Escher",
-            "category": 2,
-            "difficulty": 1,
-            "id": 16,
-            "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-        }
-    ],
-    "success": true,
-    "total_questions": 27
-}
-```
+GET Wisglist
+/wishlist/<user_id>/properties
 
-#### POST `/quizzes`
+  {
+    "feedback": [
+        {
+            "address": "1015 Florida Street",
+            "agent_id": 9,
+            "bedroom": null,
+            "country": "Nairobi, Kenya",
+            "created_at": "Wed, 09 Nov 2022 13:14:34 GMT",
+            "description": "Can only pick drinks and view drink details",
+            "id": 18,
+            "price": 2222,
+            "property_id": 33,
+            "property_type": "Bungalow",
+            "user_id=": 14,
+            "view1": null,
+            "view2": null,
+            "view3": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QAqRXhpZgAASUkqriCN48DwOLTMmLqZ81+DAFj2ECwO70W13AWP4NtdUxUGq2LoyYsWouLHuAPEdg4AjuO7gQNMMAMkWVip3g2Nu7AAKKYg3BItxGh9WGKhfTPnNtzHcRopsCdRwOm8aHs44qxUcD4oAxDgoBTHV8CLjh2jwPDw1HdhUIUPT6Bhua9r79N9xu9d9ewYQARikJhijFkUf/2Q==",
+            "view4": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEBLAEsAAD/2wBJX/ACFE12CkwQ5Z9JNpcAVlYSXlNq5cGtSzQmYAcQGdGonLZLO2gZ9lIkI1Z9EAunF+sQaPX4iUuWNfpNREuzFXXmxBSkaicRAaru3keZtEObZxEq6mNjLurs+xFQTQvAG+mJeq1v7GPTM+xAKJ/9k="
+        },
 
-- allows the user to play the quiz game, returning a random question that is not in the previous_questions list.
-- Request Arguments:
-  - Json object:
-    - `previous_questions`: A list that contains the IDs of the previous questions. If starting the game for the first time, you can post an empty list.
-    - `quiz_category`: A dictionary that contains the category id and category type.
-      - int:`id`: the category id to get the random question from.  
-        use `0` to get a random question from all categories.
-      - str:`type`: an optional value for the category type.  
-        Please note that this variable is provided only for convenience, and it will not have any effect on getting the question.
-- returns: a question dictionary that has the following data: - int:`id`: An integer that contains the question ID. - str:`question`: A string that contains the question text. - str:`answer`: A string that contains the answer text. - int:`difficulty`: An integer that contains the difficulty. - int:`category: An integer that contains the category ID.
-- Examples:
-  - request a random question with previous questions and the category "science":  
-    `curl -X POST http://localhost:5000/api/v1/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [21], "quiz_category": {"type": "Science", "id": 1}}'`
-  - request with no previous questions, for a random question from all categories:  
-     `curl -X POST http://localhost:5000/api/v1/quizzes -H "Content-Type: application/json" -d '{"previous_questions": [], "quiz_category": {"id": 0}}'`
-    Sample return:
+
 
 ```
-{
-    "question": {
-        "answer": "Flask",
-        "category": 1,
-        "difficulty": 2,
-        "id": 42,
-        "question": "What is the application used to build great python backends?"
-    },
-    "success": true
-}
-```
+
 
 ## Testing
 
