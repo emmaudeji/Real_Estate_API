@@ -1,12 +1,8 @@
-# Backend - housify
+# Property Management API
+
+API designed to serve property management application. It performs CRUD functionalities for 3 user model, and Property data. The user model includes public user, registered user, Agents. The database is designed with Postgres and uses the flask-migrate package to update the database. 
 
 ## Quick Set-up
-
-### Set-up the postgre database.
-
-#### Install Dependencies
-
-To get started quickly, follow this steps - clone the ripo - navigate to the backend directory. - install dependencies from the Pipfile using `pipenv install` - activate the the virtual environment using `pipenv shell` - run flask app from the .flaskenv using `flask run` - curl `http://127.0.0.1:5000/properties` - continue with the frontend set up.
 
 1. **Python 3.7** - Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)
 
@@ -17,6 +13,14 @@ To get started quickly, follow this steps - clone the ripo - navigate to the bac
 ```bash
   pip install -r requirements.txt
 ```
+### Alternative set-up
+To get started quickly, follow this steps
+- install python-pipenv: `pip install pipenv` [learn more about pipenv](https://pipenv.pypa.io/en/latest/install/).
+- install dependencies from the Pipfile using `pipenv install` 
+- activate the the virtual environment using `pipenv shell` 
+- set up the database. Check below.
+- run flask app from the .flaskenv using `flask run` 
+- Test with curl `http://127.0.0.1:5000/properties` 
 
 #### Key Pip Dependencies
 
@@ -28,21 +32,21 @@ To get started quickly, follow this steps - clone the ripo - navigate to the bac
 
 ### Set up the Database
 
-With Postgres running, create a `trivia` database:
+With Postgres running, create a `housify` database:
 
 ```bash
-createbd trivia
+createbd housify
 ```
 
-Populate the database using the `trivia.psql` file provided. From the `backend` folder in terminal run:
+Populate the database using the `housify.psql` file provided. From the root directory in terminal run:
 
 ```bash
-psql trivia < trivia.psql
+psql housify < housify.psql
 ```
 
 ### Run the Server
 
-From within the `./src` directory first ensure you are working using your created virtual environment.
+From within the `root` directory first ensure you are working using your created virtual environment.
 
 To run the server, execute:
 
@@ -56,7 +60,7 @@ The `--reload` flag will detect file changes and restart the server automaticall
 
 ### General
 
-- Base URL: this app is hosted locally under the port 5000. The API base URL is `http://localhost:5000/api/v1`
+- Base URL: this app is hosted locally under the port 5000. The API base URL is `http://localhost:5000/`
 - Authentication: this app doesn't require any authentication or API tokens.
 - You must set the header: `Content-Type: application/json` with every request.
 
@@ -81,126 +85,125 @@ The following errors will be reported:
 
 ### Endpoints
 
-#### GET `/categories`
+#### GET `/users`
 
-- Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category.
+- Fetches a array of users details.
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains an object of id: category_string key:value pairs.
-- example: `curl http://localhost:5000/api/v1/categories -H "Content-Type: application/json"`
-
-```
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
-```
-
-#### GET `/questions`
-
-- Fetches a dictionary of paginated questions, as well as a list of category dictionaries, in which the keys are the category ids and the values are the corresponding category strings.
-- Request Arguments:
-  - optional URL queries:
-    - `page`: an optional integer for a page number, which is used to fetch 10 questions for the corresponding page.
-    - default: `1`
-- Returns: An object with 3 keys:
-  - `questions`: a list that contains paginated questions objects, that coorespond to the `page` query.
-    - int:`id`: Question id.
-    - str:`question`: Question text.
-    - int:`difficulty`: Question difficulty.
-    - int:`category`: question category id.
-  - `categories`: a dictionary that contains objects of id: category_string key:value pairs.
-  - int:`total_questions`: an integer that contains total questions
-- example: `curl http://localhost:5000/api/v1/categories -H "Content-Type: application/json"`
+- Returns: An array object that contains list of user objects which is a dictionary containing the details of each user in the list.
+- example: `curl http://localhost:5000/users -H "Content-Type: application/json"`
 
 ```
 {
-  "categories": {
-    "1": "Science",
-    "2": "Art",
-    "3": "Geography",
-    "4": "History",
-    "5": "Entertainment",
-    "6": "Sports"
-  },
-  "questions": [
-    {
-      "answer": "Apollo 13",
-      "category": 3,
-      "difficulty": 4,
-      "id": 2,
-      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
-    },
-    {
-      "answer": "Tom Cruise",
-      "category": 5,
-      "difficulty": 4,
-      "id": 4,
-      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
-    },
-    {
-      "answer": "Maya Angelou",
-      "category": 4,
-      "difficulty": 2,
-      "id": 5,
-      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
-    },
-    {
-      "answer": "Edward Scissorhands",
-      "category": 5,
-      "difficulty": 3,
-      "id": 6,
-      "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
-    },
-    {
-      "answer": "Muhammad Ali",
-      "category": 4,
-      "difficulty": 1,
-      "id": 9,
-      "question": "What boxer's original name is Cassius Clay?"
-    },
-    {
-      "answer": "Brazil",
-      "category": 6,
-      "difficulty": 3,
-      "id": 10,
-      "question": "Which is the only team to play in every soccer World Cup tournament?"
-    },
-    {
-      "answer": "Uruguay",
-      "category": 6,
-      "difficulty": 4,
-      "id": 11,
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    },
-    {
-      "answer": "George Washington Carver",
-      "category": 4,
-      "difficulty": 2,
-      "id": 12,
-      "question": "Who invented Peanut Butter?"
-    },
-    {
-      "answer": "Lake Victoria",
-      "category": 5,
-      "difficulty": 2,
-      "id": 13,
-      "question": "What is the largest lake in Africa?"
-    },
-    {
-      "answer": "The Palace of Versailles",
-      "category": 2,
-      "difficulty": 3,
-      "id": 14,
-      "question": "In which royal palace would you find the Hall of Mirrors?"
-    }
-  ],
   "success": true,
-  "total_questions": 20
+  "users": [
+    {
+      "created_at": "Tue, 01 Nov 2022 17:39:00 GMT",
+      "email": "x@x.com",
+      "id": 14,
+      "isAgent": true,
+      "username": "x"
+    },
+    {
+      "created_at": "Tue, 18 Oct 2022 16:21:15 GMT",
+      "email": "z@z.com",
+      "id": 13,
+      "isAgent": true,
+      "username": "z"
+    },
+    {
+      "created_at": "Sun, 06 Nov 2022 20:54:56 GMT",
+      "email": "m@m.com",
+      "id": 15,
+      "isAgent": true,
+      "username": "Mildred"
+    },
+    {
+      "created_at": "Mon, 07 Nov 2022 11:18:50 GMT",
+      "email": "s@s.com",
+      "id": 16,
+      "isAgent": true,
+      "username": "Sophia"
+    },
+    {
+      "created_at": "Mon, 07 Nov 2022 12:09:04 GMT",
+      "email": "b@b.com",
+      "id": 17,
+      "isAgent": true,
+      "username": "Bonny Luke"
+    },
+    {
+      "created_at": "Mon, 14 Nov 2022 06:59:15 GMT",
+      "email": "zelipha@gmail.com",
+      "id": 18,
+      "isAgent": false,
+      "username": "zelipha"
+    },
+    {
+      "created_at": "Mon, 14 Nov 2022 07:35:53 GMT",
+      "email": "c@c.com",
+      "id": 19,
+      "isAgent": true,
+      "username": "Cynthia"
+    },
+    {
+      "created_at": "Fri, 25 Nov 2022 12:24:13 GMT",
+      "email": "w@w.com",
+      "id": 20,
+      "isAgent": true,
+      "username": "Winner"
+    }
+  ]
 }
 ```
 
+#### GET `/agents`
+
+- Fetches an object of the list of agent objects.
+
+```
+{
+    [
+     {
+      "address": "7 Mcc Road, Opposite Edmark, Owerri.",
+      "bio": "Expert realtor with 21 years experience in property developemnt and management",
+      "country": "Nigeria",
+      "created_at": "Mon, 07 Nov 2022 12:10:51 GMT",
+      "email": "bonny@gmail.com",
+      "fullname": "Bonny Lukes",
+      "id": 9,
+      "linkedin": "www.linkedin.com/in/bonnyL",
+      "phonenumber": 333333,
+      "profilePic": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAO3UY3ptiW9qfp5du+MK/KFRyhtDaQobjZAAJPTPvWfFcN7RAQOY1CH4ZNwpRe6WnHF8uVbY/01padWtKg6PLnB3Fe/eMJU2tBSpJIVzZyCOua0FxaVKIbPKevrXiPivWr//Z",
+      "twitter": "@bonny",
+      "user_id": 17
+    },
+    {
+      "address": "12 Luca Avenue, Street 5",
+      "bio": "Professional realtor with ability to discover potential markets and make maximum returns for the client.",
+      "country": "Uzoket, Brazil",
+      "created_at": "Mon, 14 Nov 2022 06:50:21 GMT",
+      "email": "sophianoles@gmail.com",
+      "fullname": "Sophia Noles",
+      "id": 8,
+      "linkedin": "www.linkedin.com/in/sophia-noles",
+      "phonenumber": 3333334,
+      "profilePic": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnRyUkdCIFhZWiAHzgACAAkABgAxAABhY3NwTVNGVAAAAABJRUMgc1JHQgAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLUhQICAAA7nJJ9DOMe85UfeaSxWoZSckCIoepnI6nze/vPEq/P/yVW/eBmH2lZUrAfJCTB2gPE+uWeaw59BPoiDLTQkh7B6pMAVsvYgj/ALnivF7Y7EKPsBLBjp3gJxP/2Q==",
+      "twitter": "@sophiaNoles",
+      "user_id": 16
+    },
+  ],
+  "success": true
+ }
+
+```
+
+```
+#### GET `/agents`
+
+
+
+
+```
 #### GET `/categories/<int:id>/questions`
 
 - Fetches a dictionary of paginated questions that are in the category specified in the URL parameters.
