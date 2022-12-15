@@ -14,3 +14,4 @@ SQLAlchemy
 Werkzeug
 flask-migrate
 flask-bcrypt
+python-dotenv
