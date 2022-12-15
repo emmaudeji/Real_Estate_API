@@ -1,0 +1,8 @@
+# fly.toml file generated for silent-moon-8663 on 2022-12-14T17:43:01+01:00
+
+app = "silent-moon-8663"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]

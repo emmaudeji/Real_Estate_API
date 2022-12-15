@@ -1,5 +1,5 @@
 from crypt import methods
-import sys
+import os, sys
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -39,7 +39,7 @@ def create_app(test_config=None):
     # ROUTE
     @app.route('/')
     def hello():
-        return 'hey'
+        return 'app is running'
 
 
     # create/register a user from form. Add bcrypt
@@ -602,5 +602,9 @@ def create_app(test_config=None):
             'success': True,
             'feedback': body
         })
+
+    if __name__ == '__main__':
+    #   port = int(os.environ.get('PORT', 8080))
+      app.run(host='0.0.0.0', port=8080)
 
     return app
