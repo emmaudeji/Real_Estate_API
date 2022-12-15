@@ -39,7 +39,9 @@ def create_app(test_config=None):
     bcrypt = Bcrypt()
 
     # remove and use flaskdb migrate
-    db_drop_and_create_all()
+
+    with app.app_context():
+        db_drop_and_create_all()
 
 
     # ROUTE
