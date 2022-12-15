@@ -7,7 +7,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 
-database_path = 'postgresql://postgres:postgres@localhost:5432/housify'
+database_path = 'postgresql://housify:BIR7Ndq1Fn4qqwWQsaIZ8hqIuFEwxVfk@dpg-ced8t7kgqg45ht8l2hfg-a/housify'
+# 'postgresql://postgres:postgres@localhost:5432/housify'
                 # f.'postgresql://{DB_USER}:{DB_PASSWORD}@localhost:5432/{DB_NAME}'
 
 db = SQLAlchemy()
@@ -23,6 +24,11 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
     migrate = Migrate(app, db)
+    
+def db_drop_and_create_all():
+    db.drop_all()
+    db.create_all()
+
 """
 User
 """

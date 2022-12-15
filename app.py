@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from models import setup_db, User, Property, WishList, Agent
+from models import setup_db, User, Property, WishList, Agent, db_drop_and_create_all
 
 db = SQLAlchemy()
 
@@ -13,6 +13,8 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__)
     setup_db(app)
+    
+
 
     """
     @TODO: Set up CORS. Allow '*' for origins.
@@ -35,6 +37,10 @@ def create_app(test_config=None):
         return response
         
     bcrypt = Bcrypt()
+
+    # remove and use flaskdb migrate
+    db_drop_and_create_all()
+
 
     # ROUTE
     @app.route('/')
@@ -604,7 +610,7 @@ def create_app(test_config=None):
         })
 
     if __name__ == '__main__':
-      port = int(os.environ.get('PORT', 8080))
-      app.run(host='0.0.0.0', port=port)
+        from waitress import serve
+        serve(app, host="0.0.0.0", port=8080)
 
     return app
